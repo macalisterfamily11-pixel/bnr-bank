@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BNR - Panou Operator PULT</title>
+    <link rel="stylesheet" href="assets/css/bnr-styles.css">
+    <link rel="stylesheet" href="assets/css/responsive.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="assets/img/favicon.ico">
+    <style>
+        .pult-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+        
+        .quick-stats {
+            background: linear-gradient(135deg, var(--bnr-albastru-inchis), var(--bnr-albastru-deschis));
+            color: white;
+            padding: 25px;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .stats-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .stats-label {
+            font-size: 14px;
+            opacity: 0.9;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .loan-edit-form {
+            background: white;
+            padding: 25px;
+            border-radius: var(--radius-lg);
+            border: 2px solid var(--gray-300);
+        }
+        
+        .edit-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 15px;
+            align-items: end;
+            margin-bottom: 15px;
+        }
+        
+        .payment-history-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid var(--gray-300);
+            transition: background-color 0.3s;
+        }
+        
+        .payment-history-item:hover {
+            background-color: var(--gray-100);
+        }
+        
+        .payment-amount {
+            font-weight: 600;
+            color: var(--bnr-albastru-inchis);
+        }
+        
+        .payment-date {
+            color: var(--gray-600);
+            font-size: 13px;
+        }
+        
+        .payment-status {
+            font-size: 12px;
+            padding: 4px 12px;
+            border-radius: 20px;
+        }
+        
+        .status-completed {
+            background: rgba(40, 167, 69, 0.1);
+            color: var(--success);
+            border: 1px solid rgba(40, 167, 69, 0.2);
+        }
+        
+        .status-pending {
+            background: rgba(255, 193, 7, 0.1);
+            color: var(--warning);
+            border: 1px solid rgba(255, 193, 7, 0.2);
+        }
+        
+        .client-search-box {
+            position: relative;
+        }
+        
+        .search-results {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 1px solid var(--gray-300);
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-lg);
+            max-height: 300px;
+            overflow-y: auto;
+            z-index: 1000;
+            display: none;
+        }
+        
+        .search-results.active {
+            display: block;
+        }
+        
+        .search-result-item {
+            padding: 12px 15px;
+            cursor: pointer;
+            border-bottom: 1px solid var(--gray-200);
+        }
+        
+        .search-result-item:hover {
+            background-color: var(--gray-100);
+        }
+        
+        .search-result-name {
+            font-weight: 600;
+            color: var(--bnr-albastru-inchis);
+        }
+        
+        .search-result-loan {
+            font-size: 12px;
+            color: var(--gray-600);
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar-bnr">
+        <div class="navbar-brand">
+            <div class="navbar-logo">BNR</div>
+            <span>Operator PULT - Management Credite</span>
+        </div>
+        <div class="navbar-user">
+            <div class="info-utilizator">
+                <div class="nume-utilizator" id="pultUserName">Ana Ionescu</div>
+                <div class="rol-utilizator">Operator PULT</div>
+            </div>
+            <button class="btn btn-outline btn-sm" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i> Deconectare
+            </button>
+        </div>
+    </nav>
+
+    <div class="layout-bnr">
+        <aside class="sidebar-bnr">
+            <nav class="sidebar-nav">
+                <div class="sidebar-title">Operațiuni</div>
+                <a href="#dashboard" class="nav-link active" onclick="showPultSection('dashboard')">
+                    <i class="fas fa-tachometer-alt nav-icon"></i>
+                    <span>Panou Operativ</span>
+                </a>
+                <a href="#edit-loans" class="nav-link" onclick="showPultSection('edit-loans')">
+                    <i class="fas fa-edit nav-icon"></i>
+                    <span>Editare Credite</span>
+                </a>
+                <a href="#payments" class="nav-link" onclick="showPultSection('payments')">
+                    <i class="fas fa-money-bill-wave nav-icon"></i>
+                    <span>Gestiune Plăți</span>
+                </a>
+                
+                <div class="sidebar-title">Rapoarte</div>
+                <a href="#reports" class="nav-link" onclick="showPultSection('reports')">
+                    <i class="fas fa-chart-bar nav-icon"></i>
+                    <span>Rapoarte Zilnice</span>
+                </a>
+                <a href="#history" class="nav-link" onclick="showPultSection('history')">
+                    <i class="fas fa-history nav-icon"></i>
+                    <span>Istoric Operațiuni</span>
+                </a>
+                
+                <div class="sidebar-title">Utilitare</div>
+                <a href="#search" class="nav-link" onclick="showPultSection('search')">
+                    <i class="fas fa-search nav-icon"></i>
+                    <span>Căutare Client</span>
+                </a>
+                <a href="#tools" class="nav-link" onclick="showPultSection('tools')">
+                    <i class="fas fa-tools nav-icon"></i>
+                    <span>Utilitare Rapoarte</span>
+                </a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <!-- PANOU OPERATIV -->
+            <section id="dashboard" class="sectiune activa">
+                <div class="page-header">
+                    <h2 class="page-title">
+                        <i class="fas fa-tachometer-alt"></i> Panou Operativ PULT
+                    </h2>
+                    <div class="text-muted">
+                        <i class="fas fa-clock"></i>
+                        <span id="currentTime"></span>
+                    </div>
+                </div>
+
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle"></i>
+                    <strong>Operator PULT:</strong> Aveți acces la editarea datelor creditelor și gestionarea plăților pentru toți clienții.
+                </div>
+
+                <div class="pult-grid">
+                    <!-- Statistici rapide -->
+                    <div class="quick-stats">
+                        <h5><i class="fas fa-chart-line"></i> Statistici Zilnice</h5>
+                        <div class="row mt-3">
+                            <div class="col-6">
+                                <div class="stats-value" id="todayPayments">8</div>
+                                <div class="stats-label">Plăți Azi</div>
+                            </div>
+                            <div class="col-6">
+                                <div class="stats-value" id="pendingActions">3</div>
+                                <div class="stats-label">Acțiuni în Așteptare</div>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-6">
+                                <div class="stats-value" id="totalClients">48</div>
+                                <div class="stats-label">Clienți Activi</div>
+                            </div>
+                            <div class="col-6">
+                                <div class="stats-value" id="overdue">2</div>
+                                <div class="stats-label">Plăți Restante</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Acțiuni rapide -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title">
+                                <i class="fas fa-bolt"></i> Acțiuni Rapide
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-6 mb-3">
+                                    <button class="btn btn-primary w-100" onclick="showPultSection('edit-loans')">
+                                        <i class="fas fa-edit"></i> Editare Credit
+                                    </button>
+                                </div>
+                                <div class="col-6 mb-3">
+                                    <button class="btn btn-success w-100" onclick="addPayment()">
+                                        <i class="fas fa-plus-circle"></i> Adaugă Plată
+                                    </button>
+                                </div>
+                                <div class="col-6 mb-3">
+                                    <button class="btn btn-warning w-100" onclick="generateReport()">
+                                        <i class="fas fa-file-export"></i> Raport Zilnic
+                                    </button>
+                                </div>
+                                <div class="col-6 mb-3">
+                                    <button class="btn btn-info w-100" onclick="showPultSection('search')">
+                                        <i class="fas fa-search"></i> Caută Client
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Ultimele plăți -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title">
+                                <i class="fas fa-history"></i> Ultimele Plăți
+                            </h5>
+                            <button class="btn btn-sm btn-outline" onclick="showPultSection('payments')">
+                                <i class="fas fa-eye"></i> Vezi Toate
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <div id="recentPayments">
+                                <!-- Datele se încarcă din JS -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Clienți cu plăți restante -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title">
+                                <i class="fas fa-exclamation-triangle"></i> Plăți Restante
+                            </h5>
+                            <span class="badge badge-danger" id="overdueCount">2</span>
+                        </div>
+                        <div class="card-body">
+                            <div id="overdueList">
+                                <!-- Datele se încarcă din JS -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- EDITARE CREDITE -->
+            <section id="edit-loans" class="sectiune">
+                <div class="page-header">
+                    <h2 class="page-title">
+                        <i class="fas fa-edit"></i> Editare Date Credit
+                    </h2>
+                    <div class="text-muted">
+                        <i class="fas fa-user-shield"></i> Modificări înregistrate în istoric
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title">
+                            <i class="fas fa-search"></i> Căutare Client pentru Editare
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="client-search-box">
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="searchClientInput" 
+                                       placeholder="Introduceți nume client sau ID credit..." 
+                                       onkeyup="searchClients(this.value)">
+                                <button class="btn btn-primary">
+                                    <i class="fas fa-search"></i> Caută
+                                </button>
+                            </div>
+                            <div class="search-results" id="searchResults"></div>
+                        </div>
+
+                        <!-- Formular editare credit -->
+                        <div class="loan-edit-form mt-4" id="loanEditForm" style="display: none;">
+                            <h5><i class="fas fa-user"></i> Date Client</h5>
+                            <div class="row mb-4">
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label>Nume Client</label>
+                                        <input type="text" class="form-control" id="editClientName" readonly>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="form-group">
+                                        <label>ID Credit</label>
+                                        <input type="text" class="form-control" id="editLoanId" readonly>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <h5><i class="fas fa-credit-card"></i> Date Credit</h5>
+                            <div class="edit-row">
+                                <div class="form-group">
+                                    <label>Suma Totală Credit (LEI)</label>
+                                    <input type="number" class="form-control" id="editTotalAmount" min="1000" max="1000000">
+                                </div>
+                                <div class="form-group">
+                                    <label>Suma Achitată (LEI)</label>
+                                    <input type="number" class="form-control" id="editPaidAmount" min="0" max="1000000">
+                                </div>
+                                <div class="form-group">
+                                    <label>Status Credit</label>
+                                    <select class="form-control" id="editLoanStatus">
+                                        <option value="active">Activ</option>
+                                        <option value="overdue">Restant</option>
+                                        <option value="closed">Închis</option>
+                                        <option value="frozen">Înghețat</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="edit-row">
+                                <div class="form-group">
+                                    <label>Rată Dobândă (%)</label>
+                                    <input type="number" class="form-control" id="editInterestRate" min="1" max="20" step="0.1">
+                                </div>
+                                <div class="form-group">
+                                    <label>Plată Lunară (LEI)</label>
+                                    <input type="number" class="form-control" id="editMonthlyPayment" min="100" max="10000">
+                                </div>
+                                <div class="form-group">
+                                    <label>Următoarea Plată</label>
+                                    <input type="date" class="form-control" id="editNextPaymentDate">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Notițe Editare</label>
+                                <textarea class="form-control" id="editNotes" rows="3" 
+                                          placeholder="Adăugați notițe despre modificările efectuate..."></textarea>
+                            </div>
+
+                            <div class="mt-4">
+                                <button class="btn btn-primary" onclick="saveLoanChanges()">
+                                    <i class="fas fa-save"></i> Salvează Modificări
+                                </button>
+                                <button class="btn btn-secondary" onclick="resetEditForm()">
+                                    <i class="fas fa-redo"></i> Resetează
+                                </button>
+                                <button class="btn btn-success" onclick="addPaymentToLoan()">
+                                    <i class="fas fa-money-bill-wave"></i> Adaugă Plată
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Istoric modificări -->
+                <div class="card mt-4">
+                    <div class="card-header">
+                        <h5 class="card-title">
+                            <i class="fas fa-history"></i> Istoric Modificări
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="tabel-container">
+                            <table class="tabel">
+                                <thead>
+                                    <tr>
+                                        <th>Data</th>
+                                        <th>Client</th>
+                                        <th>Modificare</th>
+                                        <th>Operator</th>
+                                        <th>Notițe</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="editHistory">
+                                    <!-- Datele se încarcă din JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- GESTIUNE PLĂȚI -->
+            <section id="payments" class="sectiune">
+                <div class="page-header">
+                    <h2 class="page-title">
+                        <i class="fas fa-money-bill-wave"></i> Gestiune Plăți
+                    </h2>
+                    <button class="btn btn-primary" onclick="addPayment()">
+                        <i class="fas fa-plus"></i> Adaugă Plată Nouă
+                    </button>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <div class="tabel-container">
+                            <table class="tabel">
+                                <thead>
+                                    <tr>
+                                        <th>Data</th>
+                                        <th>Client</th>
+                                        <th>Suma (LEI)</th>
+                                        <th>Tip Plată</th>
+                                        <th>Status</th>
+                                        <th>Operator</th>
+                                        <th>Acțiuni</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="paymentsTable">
+                                    <!-- Datele se încarcă din JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- RAPOARTE ZILNICE -->
+            <section id="reports" class="sectiune">
+                <div class="page-header">
+                    <h2 class="page-title">
+                        <i class="fas fa-chart-bar"></i> Rapoarte Zilnice
+                    </h2>
+                    <div class="btn-group">
+                        <button class="btn btn-outline active" onclick="filterReports('today')">Astăzi</button>
+                        <button class="btn btn-outline" onclick="filterReports('week')">Săptămâna</button>
+                        <button class="btn btn-outline" onclick="filterReports('month')">Luna</button>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-8">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="card-title">
+                                    <i class="fas fa-chart-pie"></i> Statistici Plăți
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-4 text-center">
+                                        <div class="stats-value text-primary" id="totalPaymentsToday">15.250 LEI</div>
+                                        <div class="stats-label">Total Plăți Azi</div>
+                                    </div>
+                                    <div class="col-4 text-center">
+                                        <div class="stats-value text-success" id="completedPayments">12</div>
+                                        <div class="stats-label">Plăți Finalizate</div>
+                                    </div>
+                                    <div class="col-4 text-center">
+                                        <div class="stats-value text-warning" id="pendingPayments">3</div>
+                                        <div class="stats-label">Plăți în Așteptare</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="card-title">
+                                    <i class="fas fa-download"></i> Export Raport
+                                </h5>
+                            </div>
+                            <div class="card-body text-center">
+                                <button class="btn btn-primary mb-2 w-100" onclick="exportReport('pdf')">
+                                    <i class="fas fa-file-pdf"></i> Export PDF
+                                </button>
+                                <button class="btn btn-success mb-2 w-100" onclick="exportReport('excel')">
+                                    <i class="fas fa-file-excel"></i> Export Excel
+                                </button>
+                                <button class="btn btn-secondary w-100" onclick="printReport()">
+                                    <i class="fas fa-print"></i> Printează
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CAUTARE CLIENT -->
+            <section id="search" class="sectiune">
+                <div class="page-header">
+                    <h2 class="page-title">
+                        <i class="fas fa-search"></i> Căutare Avansată Client
+                    </h2>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label>Nume Client</label>
+                                    <input type="text" class="form-control" id="searchName" placeholder="Introduceți nume...">
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label>ID Credit</label>
+                                    <input type="text" class="form-control" id="searchLoanId" placeholder="CRD-XXXX-XXX">
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label>Status Credit</label>
+                                    <select class="form-control" id="searchStatus">
+                                        <option value="">Toate</option>
+                                        <option value="active">Activ</option>
+                                        <option value="overdue">Restant</option>
+                                        <option value="closed">Închis</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label>Suma Credit Min (LEI)</label>
+                                    <input type="number" class="form-control" id="searchMinAmount" placeholder="1000">
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label>Suma Credit Max (LEI)</label>
+                                    <input type="number" class="form-control" id="searchMaxAmount" placeholder="100000">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="text-center mt-4">
+                            <button class="btn btn-primary" onclick="performAdvancedSearch()">
+                                <i class="fas fa-search"></i> Caută Avansat
+                            </button>
+                            <button class="btn btn-secondary" onclick="resetSearch()">
+                                <i class="fas fa-redo"></i> Resetează
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Rezultate căutare -->
+                <div class="card mt-4" id="searchResultsCard" style="display: none;">
+                    <div class="card-header">
+                        <h5 class="card-title">
+                            <i class="fas fa-list"></i> Rezultate Căutare
+                        </h5>
+                        <span class="badge badge-primary" id="resultsCount">0</span>
+                    </div>
+                    <div class="card-body">
+                        <div id="advancedSearchResults">
+                            <!-- Rezultatele se încarcă din JS -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modal adăugare plată -->
+    <div class="modal-bnr" id="paymentModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">
+                    <i class="fas fa-money-bill-wave"></i> Adăugare Plată Nouă
+                </h3>
+                <button class="modal-close" onclick="closePaymentModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="newPaymentForm">
+                    <div class="form-group">
+                        <label>Selectați Client</label>
+                        <select class="form-control" id="paymentClient" required>
+                            <option value="">-- Selectați client --</option>
+                            <!-- Opțiunile se încarcă din JS -->
+                        </select>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label>Suma Plată (LEI)</label>
+                                <input type="number" class="form-control" id="paymentAmount" required min="1" max="100000">
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-group">
+                                <label>Data Plății</label>
+                                <input type="date" class="form-control" id="paymentDate" required>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Tip Plată</label>
+                        <select class="form-control" id="paymentType" required>
+                            <option value="monthly">Plată Lunară</option>
+                            <option value="early">Achitare Anticipată</option>
+                            <option value="partial">Plată Parțială</option>
+                            <option value="penalty">Penalități</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Metodă Plată</label>
+                        <select class="form-control" id="paymentMethod" required>
+                            <option value="transfer">Transfer Bancar</option>
+                            <option value="card">Card de Credit</option>
+                            <option value="cash">Numerar</option>
+                            <option value="direct">Debit Direct</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Notițe (opțional)</label>
+                        <textarea class="form-control" id="paymentNotes" rows="2" placeholder="Adăugați detalii despre plată..."></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closePaymentModal()">Anulează</button>
+                <button class="btn btn-primary" onclick="submitPayment()">Adaugă Plată</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/js/auth.js"></script>
+    <script>
+        // Verificare autentificare operator PULT
+        document.addEventListener('DOMContentLoaded', function() {
+            const utilizator = JSON.parse(sessionStorage.getItem('utilizatorCurent'));
+            
+            if (!utilizator || utilizator.rol !== 'pult') {
+                window.location.href = 'index.html';
+                return;
+            }
+            
+            // Setare date utilizator
+            document.getElementById('pultUserName').textContent = utilizator.nume;
+            
+            // Setare timp curent
+            updateCurrentTime();
+            setInterval(updateCurrentTime, 60000);
+            
+            // Încărcare date inițiale
+            loadRecentPayments();
+            loadOverdueList();
+            loadEditHistory();
+            loadPaymentsTable();
+            loadClientOptions();
+            
+            // Setare dată curentă în formular plată
+            document.getElementById('paymentDate').value = new Date().toISOString().split('T')[0];
+        });
+        
+        // Actualizare timp curent
+        function updateCurrentTime() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('ro-RO', { 
+                hour: '2-digit', 
+                minute: '2-digit' 
+            });
+            document.getElementById('currentTime').textContent = timeString;
+        }
+        
+        // Afișare secțiune
+        function showPultSection(sectionId) {
+            document.querySelectorAll('.sectiune').forEach(sectiune => {
+                sectiune.classList.remove('activa');
+            });
+            
+            document.getElementById(sectionId).classList.add('activa');
+            
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('onclick')?.includes(sectionId)) {
+                    link.classList.add('active');
+                }
+            });
+        }
+        
+        // Încărcare plăți recente
+        function loadRecentPayments() {
+            const payments = [
+                {client: 'Ion Popescu', amount: '2.500 LEI', date: '20.01.2024 14:30', status: 'completed'},
+                {client: 'Maria Ionescu', amount: '1.800 LEI', date: '20.01.2024 13:15', status: 'completed'},
+                {client: 'Vasile Georgescu', amount: '3.200 LEI', date: '20.01.2024 11:45', status: 'pending'},
+                {client: 'Ana Popa', amount: '2.100 LEI', date: '20.01.2024 10:20', status: 'completed'}
+            ];
+            
+            const container = document.getElementById('recentPayments');
+            container.innerHTML = '';
+            
+            payments.forEach(payment => {
+                const statusClass = payment.status === 'completed' ? 'status-completed' : 'status-pending';
+                const statusText = payment.status === 'completed' ? 'Finalizată' : 'În așteptare';
+                
+                container.innerHTML += `
+                    <div class="payment-history-item">
+                        <div>
+                            <div class="payment-amount">${payment.amount}</div>
+                            <div class="payment-date">${payment.date}</div>
+                        </div>
+                        <div>
+                            <div style="font-weight: 500; margin-bottom: 5px;">${payment.client}</div>
+                            <div class="payment-status ${statusClass}">${statusText}</div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+        
+        // Încărcare plăți restante
+        function loadOverdueList() {
+            const overdue = [
+                {client: 'George Mihai', amount: '2.500 LEI', days: 5, phone: '+40 721 111 222'},
+                {client: 'Elena Stan', amount: '1.800 LEI', days: 2, phone: '+40 721 333 444'}
+            ];
+            
+            const container = document.getElementById('overdueList');
+            container.innerHTML = '';
+            
+            overdue.forEach(item => {
+                container.innerHTML += `
+                    <div class="payment-history-item">
+                        <div>
+                            <div style="font-weight: 600; color: var(--danger);">${item.client}</div>
+                            <div class="payment-date">${item.amount} | Întârziere: ${item.days} zile</div>
+                        </div>
+                        <div>
+                            <div style="margin-bottom: 5px;">${item.phone}</div>
+                            <button class="btn btn-sm btn-danger" onclick="callClient('${item.phone}')">
+                                <i class="fas fa-phone"></i> Sună
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            document.getElementById('overdueCount').textContent = overdue.length;
+        }
+        
+        // Încărcare istoric modificări
+        function loadEditHistory() {
+            const history = [
+                {date: '20.01.2024 14:30', client: 'Ion Popescu', change: 'Actualizare sumă achitată', operator: 'pult', notes: 'Plată lunară completă'},
+                {date: '20.01.2024 13:15', client: 'Maria Ionescu', change: 'Schimbare rată dobândă', operator: 'pult', notes: 'Redus de la 9% la 8.5%'},
+                {date: '19.01.2024 16:45', client: 'Vasile Georgescu', change: 'Adăugare plată anticipată', operator: 'admin', notes: 'Achitare parțială 5.000 LEI'}
+            ];
+            
+            const tbody = document.getElementById('editHistory');
+            tbody.innerHTML = '';
+            
+            history.forEach(item => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${item.date}</td>
+                        <td>${item.client}</td>
+                        <td>${item.change}</td>
+                        <td>${item.operator}</td>
+                        <td>${item.notes}</td>
+                    </tr>
+                `;
+            });
+        }
+        
+        // Încărcare tabel plăți
+        function loadPaymentsTable() {
+            const payments = [
+                {date: '20.01.2024', client: 'Ion Popescu', amount: '2.500 LEI', type: 'Plată lunară', status: 'Finalizată', operator: 'pult'},
+                {date: '20.01.2024', client: 'Maria Ionescu', amount: '1.800 LEI', type: 'Achitare anticipată', status: 'Finalizată', operator: 'pult'},
+                {date: '20.01.2024', client: 'Vasile Georgescu', amount: '3.200 LEI', type: 'Plată parțială', status: 'În așteptare', operator: 'pult'},
+                {date: '19.01.2024', client: 'Ana Popa', amount: '2.100 LEI', type: 'Plată lunară', status: 'Finalizată', operator: 'admin'}
+            ];
+            
+            const tbody = document.getElementById('paymentsTable');
+            tbody.innerHTML = '';
+            
+            payments.forEach(payment => {
+                const statusBadge = payment.status === 'Finalizată' ? 'badge-success' : 'badge-warning';
+                
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${payment.date}</td>
+                        <td>${payment.client}</td>
+                        <td><strong>${payment.amount}</strong></td>
+                        <td>${payment.type}</td>
+                        <td><span class="badge ${statusBadge}">${payment.status}</span></td>
+                        <td>${payment.operator}</td>
+                        <td>
+                            <div class="actiuni-tabel">
+                                <button class="btn btn-sm btn-outline" onclick="viewPaymentDetails()">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="btn btn-sm btn-outline" onclick="editPayment()">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+        
+        // Căutare clienți
+        function searchClients(query) {
+            const results = document.getElementById('searchResults');
+            
+            if (query.length < 2) {
+                results.classList.remove('active');
+                return;
+            }
+            
+            // Date demo pentru căutare
+            const clients = [
+                {id: 1, name: 'Ion Popescu', loanId: 'CRD-2024-001', loanAmount: '50.000 LEI'},
+                {id: 2, name: 'Maria Ionescu', loanId: 'CRD-2024-002', loanAmount:

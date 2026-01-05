@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BNR - Banca Națională a României</title>
+    <link rel="stylesheet" href="assets/css/bnr-styles.css">
+    <link rel="stylesheet" href="assets/css/responsive.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="assets/img/favicon.ico">
+    <style>
+        /* Stiluri specifice paginii de login */
+        body.login-page {
+            background: linear-gradient(135deg, #1a2980 0%, #26d0ce 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .bnr-login-container {
+            width: 100%;
+            max-width: 480px;
+            animation: fadeIn 0.6s ease;
+        }
+
+        .bnr-login-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .bnr-login-header {
+            background: linear-gradient(135deg, #00509E 0%, #003366 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .bnr-login-header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 1%, transparent 1%);
+            background-size: 30px 30px;
+            opacity: 0.3;
+        }
+
+        .bnr-logo {
+            font-size: 48px;
+            margin-bottom: 15px;
+            color: #FFD700;
+        }
+
+        .bnr-title {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 5px;
+            letter-spacing: 1px;
+        }
+
+        .bnr-subtitle {
+            font-size: 16px;
+            opacity: 0.9;
+            letter-spacing: 2px;
+        }
+
+        .bnr-fullname {
+            font-size: 14px;
+            opacity: 0.7;
+            margin-top: 10px;
+        }
+
+        .bnr-login-body {
+            padding: 40px;
+        }
+
+        .bank-selector {
+            margin-bottom: 25px;
+        }
+
+        .bank-selector label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+            font-weight: 500;
+            color: #003366;
+            font-size: 14px;
+        }
+
+        .bank-select {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #E0E0E0;
+            border-radius: 10px;
+            font-size: 16px;
+            background: #F8F9FA;
+            transition: all 0.3s;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23003066' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            background-size: 16px;
+        }
+
+        .bank-select:focus {
+            outline: none;
+            border-color: #00509E;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(0, 80, 158, 0.1);
+        }
+
+        .captcha-section {
+            background: #F8F9FA;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border: 2px dashed #CED4DA;
+        }
+
+        .captcha-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .captcha-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 500;
+            color: #003366;
+        }
+
+        .captcha-display {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 32px;
+            font-weight: 700;
+            color: #003366;
+            border: 2px solid #00509E;
+        }
+
+        .captcha-input {
+            width: 100px;
+            font-size: 32px;
+            text-align: center;
+            border: none;
+            border-bottom: 3px solid #00509E;
+            background: transparent;
+            margin: 0 15px;
+            font-weight: 700;
+            color: #003366;
+        }
+
+        .captcha-input:focus {
+            outline: none;
+            border-bottom-color: #FFD700;
+        }
+
+        .btn-refresh-captcha {
+            background: #6C757D;
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-refresh-captcha:hover {
+            background: #00509E;
+            transform: rotate(180deg);
+        }
+
+        .login-form .form-group {
+            margin-bottom: 25px;
+        }
+
+        .login-form label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #003366;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #E0E0E0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s;
+            background: #F8F9FA;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #00509E;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(0, 80, 158, 0.1);
+        }
+
+        .password-wrapper {
+            position: relative;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #6C757D;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #00509E 0%, #003366 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 10px;
+        }
+
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 80, 158, 0.3);
+        }
+
+        .demo-credentials {
+            margin-top: 30px;
+            padding: 25px;
+            background: linear-gradient(135deg, #FFD700 0%, #FFED4E 100%);
+            border-radius: 15px;
+            border-left: 5px solid #00509E;
+        }
+
+        .demo-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #003366;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .demo-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .demo-item {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid rgba(0, 80, 158, 0.2);
+        }
+
+        .demo-item strong {
+            color: #00509E;
+            font-size: 13px;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .demo-item span {
+            display: block;
+            font-size: 12px;
+            color: #495057;
+        }
+
+        .bnr-login-footer {
+            text-align: center;
+            padding: 20px;
+            background: #F8F9FA;
+            border-top: 1px solid #E9ECEF;
+            font-size: 12px;
+            color: #6C757D;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 576px) {
+            .bnr-login-body {
+                padding: 30px 20px;
+            }
+            
+            .demo-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .bnr-title {
+                font-size: 28px;
+            }
+            
+            .captcha-display {
+                font-size: 24px;
+                padding: 15px;
+            }
+            
+            .captcha-input {
+                width: 80px;
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body class="login-page">
+    <div class="bnr-login-container">
+        <div class="bnr-login-card">
+            <!-- Antet BNR -->
+            <div class="bnr-login-header">
+                <div class="bnr-logo">
+                    <i class="fas fa-university"></i>
+                </div>
+                <h1 class="bnr-title">BNR</h1>
+                <p class="bnr-subtitle">BANCA NAȚIONALĂ A ROMÂNIEI</p>
+                <p class="bnr-fullname">Banca Centrală a României</p>
+            </div>
+
+            <!-- Conținut login -->
+            <div class="bnr-login-body">
+                <!-- Selectare bancă -->
+                <div class="bank-selector">
+                    <label for="selectBanca">
+                        <i class="fas fa-landmark"></i> SELECTAȚI BANCA
+                    </label>
+                    <select id="selectBanca" class="bank-select">
+                        <option value="BNR" selected>BNR - Banca Națională a României</option>
+                        <option value="BCR">BCR - Banca Comercială Română</option>
+                        <option value="BRD">BRD - Groupe Société Générale</option>
+                        <option value="BancaTransilvania">Banca Transilvania</option>
+                        <option value="Raiffeisen">Raiffeisen Bank</option>
+                        <option value="CEC">CEC Bank</option>
+                        <option value="UniCredit">UniCredit Bank</option>
+                    </select>
+                </div>
+
+                <!-- Captcha matematic -->
+                <div class="captcha-section">
+                    <div class="captcha-header">
+                        <div class="captcha-title">
+                            <i class="fas fa-shield-alt"></i> VERIFICARE SECURITATE
+                        </div>
+                        <button type="button" class="btn-refresh-captcha" id="refreshCaptchaBtn">
+                            <i class="fas fa-redo"></i>
+                        </button>
+                    </div>
+                    <div class="captcha-display">
+                        <span id="captchaNumber1">8</span> + 
+                        <span id="captchaNumber2">5</span> = 
+                        <input type="number" id="captchaRaspuns" class="captcha-input" placeholder="?" min="1" max="20">
+                    </div>
+                </div>
+
+                <!-- Formular autentificare -->
+                <form id="loginForm" class="login-form">
+                    <div class="form-group">
+                        <label for="inputUsername">
+                            <i class="fas fa-user"></i> NUME UTILIZATOR
+                        </label>
+                        <input type="text" id="inputUsername" class="form-control" placeholder="Introduceți numele de utilizator" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="inputParola">
+                            <i class="fas fa-key"></i> PAROLĂ
+                        </label>
+                        <div class="password-wrapper">
+                            <input type="password" id="inputParola" class="form-control" placeholder="Introduceți parola" required>
+                            <button type="button" class="toggle-password" id="toggleParolaBtn">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn-login">
+                        <i class="fas fa-sign-in-alt"></i> AUTENTIFICARE
+                    </button>
+                </form>
+
+                <!-- Credențiale demo -->
+                <div class="demo-credentials">
+                    <div class="demo-title">
+                        <i class="fas fa-info-circle"></i> ACCES DEMONSTRATIV
+                    </div>
+                    <div class="demo-grid">
+                        <div class="demo-item">
+                            <strong>CLIENT</strong>
+                            <span>Utilizator: client</span>
+                            <span>Parolă: Client123!</span>
+                        </div>
+                        <div class="demo-item">
+                            <strong>OPERATOR PULT</strong>
+                            <span>Utilizator: pult</span>
+                            <span>Parolă: PultOperator123!</span>
+                        </div>
+                        <div class="demo-item">
+                            <strong>ADMINISTRATOR</strong>
+                            <span>Utilizator: admin</span>
+                            <span>Parolă: AdminSecure123!</span>
+                        </div>
+                        <div class="demo-item">
+                            <strong>SUPER-ADMINISTRATOR</strong>
+                            <span>Utilizator: Lorde_Macalister</span>
+                            <span>Parolă: Shunia03SMacalister</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="bnr-login-footer">
+                <i class="fas fa-lock"></i>
+                <span>Sistem securizat conform standardului PCI DSS | BNR © 2024</span>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/js/auth.js"></script>
+    <script>
+        // Generare captcha
+        function genereazaCaptcha() {
+            const num1 = Math.floor(Math.random() * 10) + 1;
+            const num2 = Math.floor(Math.random() * 10) + 1;
+            document.getElementById('captchaNumber1').textContent = num1;
+            document.getElementById('captchaNumber2').textContent = num2;
+            sessionStorage.setItem('captchaCorect', num1 + num2);
+        }
+
+        // Actualizare captcha
+        document.getElementById('refreshCaptchaBtn').addEventListener('click', function() {
+            genereazaCaptcha();
+            this.style.transform = 'rotate(360deg)';
+            setTimeout(() => {
+                this.style.transform = '';
+            }, 300);
+        });
+
+        // Arată/ascunde parola
+        document.getElementById('toggleParolaBtn').addEventListener('click', function() {
+            const inputParola = document.getElementById('inputParola');
+            const icon = this.querySelector('i');
+            
+            if (inputParola.type === 'password') {
+                inputParola.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                inputParola.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        });
+
+        // Tratare formular autentificare
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Verificare captcha
+            const raspunsUtilizator = parseInt(document.getElementById('captchaRaspuns').value);
+            const raspunsCorect = parseInt(sessionStorage.getItem('captchaCorect'));
+            
+            if (raspunsUtilizator !== raspunsCorect) {
+                alert('❌ EROARE: Răspuns captcha incorect!');
+                genereazaCaptcha();
+                return;
+            }
+            
+            // Obținere date formular
+            const username = document.getElementById('inputUsername').value;
+            const parola = document.getElementById('inputParola').value;
+            const banca = document.getElementById('selectBanca').value;
+            
+            // Verificare credențiale demo
+            const utilizatori = {
+                'client': {parola: 'Client123!', rol: 'client', nume: 'Ion Popescu'},
+                'pult': {parola: 'PultOperator123!', rol: 'pult', nume: 'Ana Ionescu'},
+                'admin': {parola: 'AdminSecure123!', rol: 'admin', nume: 'Administrator Sistem'},
+                'Lorde_Macalister': {parola: 'Shunia03SMacalister', rol: 'superadmin', nume: 'Super Administrator'}
+            };
+            
+            const utilizator = utilizatori[username];
+            
+            if (utilizator && utilizator.parola === parola) {
+                // Salvare date utilizator
+                sessionStorage.setItem('utilizatorCurent', JSON.stringify({
+                    username: username,
+                    nume: utilizator.nume,
+                    rol: utilizator.rol,
+                    banca: banca,
+                    dataAutentificare: new Date().toISOString()
+                }));
+                
+                // Redirecționare în funcție de rol
+                switch(utilizator.rol) {
+                    case 'client':
+                        window.location.href = 'cabinet.html';
+                        break;
+                    case 'pult':
+                        window.location.href = 'pult.html';
+                        break;
+                    case 'admin':
+                        window.location.href = 'admin.html';
+                        break;
+                    case 'superadmin':
+                        window.location.href = 'super-admin.html';
+                        break;
+                    default:
+                        window.location.href = 'cabinet.html';
+                }
+                
+            } else {
+                alert('❌ EROARE: Nume utilizator sau parolă incorectă!');
+                genereazaCaptcha();
+            }
+        });
+
+        // Generare captcha inițială
+        genereazaCaptcha();
+    </script>
+</body>
+</html>

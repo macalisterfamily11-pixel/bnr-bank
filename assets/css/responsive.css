@@ -1,0 +1,498 @@
+/* ============================================
+   STILURI RESPONSIVE BNR
+   ============================================ */
+
+/* Dispozitive mari (desktop) */
+@media (min-width: 1200px) {
+    .container {
+        max-width: 1140px;
+    }
+}
+
+/* Laptop-uri și tablete mari */
+@media (max-width: 1199px) {
+    .sidebar-bnr {
+        width: 240px;
+    }
+    
+    .main-content {
+        margin-left: 240px;
+    }
+    
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Tablete */
+@media (max-width: 991px) {
+    .sidebar-bnr {
+        width: 220px;
+    }
+    
+    .main-content {
+        margin-left: 220px;
+        padding: 20px;
+    }
+    
+    .navbar-brand span {
+        font-size: 16px;
+    }
+    
+    .card-bancar {
+        height: 200px;
+        padding: 20px;
+    }
+    
+    .numar-card {
+        font-size: 1.3rem;
+    }
+}
+
+/* Tablete mici și telefoane mari */
+@media (max-width: 767px) {
+    .sidebar-bnr {
+        position: fixed;
+        left: -260px;
+        top: 70px;
+        width: 260px;
+        transition: left 0.3s ease;
+        z-index: 1000;
+    }
+    
+    .sidebar-bnr.active {
+        left: 0;
+    }
+    
+    .main-content {
+        margin-left: 0;
+        padding: 15px;
+    }
+    
+    .navbar {
+        padding: 0 15px;
+    }
+    
+    .navbar-brand span {
+        display: none;
+    }
+    
+    .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+    
+    .page-title {
+        font-size: 1.5rem;
+    }
+    
+    /* Buton meniu mobil */
+    .mobile-menu-toggle {
+        display: flex !important;
+        background: none;
+        border: none;
+        color: white;
+        font-size: 20px;
+        cursor: pointer;
+        padding: 5px;
+    }
+    
+    /* Overlay pentru meniu */
+    .sidebar-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 999;
+    }
+    
+    .sidebar-overlay.active {
+        display: block;
+    }
+    
+    /* Ajustare coloane */
+    .row {
+        flex-direction: column;
+    }
+    
+    .col, .col-1, .col-2, .col-3, .col-4, .col-5, .col-6,
+    .col-7, .col-8, .col-9, .col-10, .col-11, .col-12 {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+    
+    /* Ajustare carduri */
+    .card-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+    
+    .card-title {
+        font-size: 1rem;
+    }
+    
+    /* Ajustare tabele */
+    .tabel-container {
+        overflow-x: auto;
+    }
+    
+    .tabel {
+        min-width: 600px;
+    }
+    
+    /* Ajustare card bancar */
+    .card-bancar {
+        height: 180px;
+        padding: 15px;
+    }
+    
+    .numar-card {
+        font-size: 1.1rem;
+        letter-spacing: 2px;
+    }
+    
+    .detalii-card {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    /* Ajustare contacte specialist */
+    .contacte-specialist {
+        grid-template-columns: 1fr;
+    }
+    
+    /* Ajustare stats grid */
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    /* Ajustare formular */
+    .input-group {
+        width: 100% !important;
+    }
+}
+
+/* Telefoane mici */
+@media (max-width: 575px) {
+    .bnr-login-container {
+        padding: 10px;
+    }
+    
+    .bnr-login-header {
+        padding: 30px 20px;
+    }
+    
+    .bnr-title {
+        font-size: 28px;
+    }
+    
+    .bnr-login-body {
+        padding: 25px 15px;
+    }
+    
+    .captcha-display {
+        font-size: 24px;
+        padding: 15px;
+    }
+    
+    .captcha-input {
+        width: 70px;
+        font-size: 24px;
+    }
+    
+    .demo-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .main-content {
+        padding: 15px 10px;
+    }
+    
+    .card-body {
+        padding: 20px;
+    }
+    
+    .btn {
+        padding: 8px 16px;
+        font-size: 14px;
+    }
+    
+    .btn-lg {
+        padding: 12px 24px;
+    }
+    
+    .valoare-stat {
+        font-size: 1.8rem;
+    }
+    
+    .header-specialist {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .avatar-specialist {
+        width: 80px;
+        height: 80px;
+        font-size: 1.8rem;
+    }
+    
+    /* Modal mobile */
+    .modal-content {
+        width: 95%;
+        margin: 10px;
+    }
+    
+    .modal-body {
+        padding: 20px;
+    }
+    
+    /* Footer */
+    .footer-links {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .footer-bnr {
+        padding: 20px 15px;
+    }
+}
+
+/* Telefoane foarte mici */
+@media (max-width: 375px) {
+    .navbar-user {
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 5px;
+    }
+    
+    .info-utilizator {
+        text-align: right;
+    }
+    
+    .card-bancar {
+        height: 160px;
+        padding: 12px;
+    }
+    
+    .numar-card {
+        font-size: 1rem;
+        letter-spacing: 1px;
+        margin: 15px 0;
+    }
+    
+    .logo-card {
+        font-size: 1.2rem;
+    }
+    
+    .form-control {
+        padding: 10px 12px;
+        font-size: 14px;
+    }
+    
+    .tabel tbody td,
+    .tabel thead th {
+        padding: 12px 8px;
+        font-size: 13px;
+    }
+    
+    .badge {
+        padding: 4px 8px;
+        font-size: 11px;
+    }
+}
+
+/* Înălțime mare (ecrane verticale) */
+@media (min-height: 800px) {
+    .bnr-login-container {
+        padding: 40px 20px;
+    }
+    
+    .main-content {
+        padding: 40px 30px;
+    }
+    
+    .card {
+        margin-bottom: 30px;
+    }
+}
+
+/* Orientare landscape pe mobile */
+@media (max-height: 600px) and (orientation: landscape) {
+    .bnr-login-container {
+        padding: 20px;
+    }
+    
+    .bnr-login-header {
+        padding: 20px;
+    }
+    
+    .bnr-login-body {
+        padding: 20px;
+    }
+    
+    .sidebar-bnr {
+        overflow-y: auto;
+        height: calc(100vh - 70px);
+    }
+}
+
+/* Imprimare */
+@media print {
+    .navbar-bnr,
+    .sidebar-bnr,
+    .footer-bnr,
+    .btn,
+    .modal-bnr {
+        display: none !important;
+    }
+    
+    .main-content {
+        margin-left: 0;
+        padding: 0;
+    }
+    
+    .card {
+        box-shadow: none;
+        border: 1px solid #000;
+        break-inside: avoid;
+    }
+    
+    .tabel {
+        border: 1px solid #000;
+    }
+    
+    .tabel th,
+    .tabel td {
+        border: 1px solid #000;
+    }
+    
+    .card-bancar {
+        background: #fff !important;
+        color: #000 !important;
+        border: 2px solid #000 !important;
+    }
+    
+    a {
+        color: #000 !important;
+        text-decoration: none;
+    }
+}
+
+/* Mod întunecat (opțional) */
+@media (prefers-color-scheme: dark) {
+    :root {
+        --bnr-albastru-inchis: #00509E;
+        --bnr-albastru-deschis: #0066CC;
+        --bnr-albastru-sus: #2C3E50;
+        --bnr-albastru-jos: #4CA1AF;
+    }
+    
+    body {
+        background-color: #121212;
+        color: #e0e0e0;
+    }
+    
+    .card {
+        background-color: #1e1e1e;
+        border-color: #333;
+    }
+    
+    .form-control {
+        background-color: #2d2d2d;
+        border-color: #444;
+        color: #fff;
+    }
+    
+    .tabel {
+        color: #e0e0e0;
+    }
+    
+    .tabel thead th {
+        background-color: #00509E;
+    }
+    
+    .tabel tbody tr {
+        border-color: #333;
+    }
+    
+    .tabel tbody tr:hover {
+        background-color: #2d2d2d;
+    }
+    
+    .sidebar-bnr {
+        background-color: #1a1a1a;
+        border-color: #333;
+    }
+    
+    .nav-link {
+        color: #bbb;
+    }
+    
+    .nav-link:hover {
+        background-color: #2d2d2d;
+        color: #fff;
+    }
+    
+    .bnr-login-card {
+        background: rgba(30, 30, 30, 0.95);
+        color: #e0e0e0;
+    }
+}
+
+/* Animații pentru mobile */
+@media (hover: none) and (pointer: coarse) {
+    .btn:hover {
+        transform: none;
+    }
+    
+    .nav-link:hover {
+        background-color: inherit;
+    }
+    
+    .tabel tbody tr:hover {
+        background-color: inherit;
+    }
+}
+
+/* Optimizare performanță mobile */
+@media (max-width: 767px) {
+    * {
+        -webkit-tap-highlight-color: transparent;
+    }
+    
+    .btn, .nav-link {
+        min-height: 44px; /* Dimensiune touch-friendly */
+    }
+    
+    input, select, textarea {
+        font-size: 16px; /* Prevenire zoom iOS */
+    }
+}
+
+/* Suport pentru foldable devices */
+@media (max-width: 767px) and (min-height: 800px) {
+    .main-content {
+        padding: 25px;
+    }
+    
+    .card {
+        margin-bottom: 25px;
+    }
+}
+
+/* Corecții pentru Safari iOS */
+@supports (-webkit-touch-callout: none) {
+    .card-bancar {
+        -webkit-backdrop-filter: blur(10px);
+        backdrop-filter: blur(10px);
+    }
+    
+    input, select, textarea {
+        font-size: 16px !important;
+    }
+}

@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BNR - Cabinet Personal</title>
+    <link rel="stylesheet" href="assets/css/bnr-styles.css">
+    <link rel="stylesheet" href="assets/css/responsive.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="assets/img/favicon.ico">
+</head>
+<body>
+    <!-- Bara de navigare -->
+    <nav class="navbar-bnr">
+        <div class="navbar-brand">
+            <div class="navbar-logo">BNR</div>
+            <span>Banca Națională a României</span>
+        </div>
+        <div class="navbar-user">
+            <div class="info-utilizator">
+                <div class="nume-utilizator" id="numeUtilizator">Ion Popescu</div>
+                <div class="rol-utilizator" id="rolUtilizator">Client BNR</div>
+            </div>
+            <button class="btn btn-outline btn-sm" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i> Deconectare
+            </button>
+        </div>
+    </nav>
+
+    <div class="layout-bnr">
+        <!-- Bara laterală -->
+        <aside class="sidebar-bnr">
+            <nav class="sidebar-nav">
+                <div class="sidebar-title">Principal</div>
+                <a href="#dashboard" class="nav-link active" onclick="afiseazaSectiune('dashboard')">
+                    <i class="fas fa-tachometer-alt nav-icon"></i>
+                    <span>Panou Principal</span>
+                </a>
+                <a href="#credit" class="nav-link" onclick="afiseazaSectiune('credit')">
+                    <i class="fas fa-credit-card nav-icon"></i>
+                    <span>Creditul Meu</span>
+                </a>
+                <a href="#plati" class="nav-link" onclick="afiseazaSectiune('plati')">
+                    <i class="fas fa-history nav-icon"></i>
+                    <span>Istoric Plăți</span>
+                </a>
+                
+                <div class="sidebar-title">Profil</div>
+                <a href="#profil" class="nav-link" onclick="afiseazaSectiune('profil')">
+                    <i class="fas fa-user nav-icon"></i>
+                    <span>Profil Personal</span>
+                </a>
+                <a href="schimbare-parola.html" class="nav-link">
+                    <i class="fas fa-key nav-icon"></i>
+                    <span>Schimbare Parolă</span>
+                </a>
+                
+                <div class="sidebar-title">Asistență</div>
+                <a href="#specialist" class="nav-link" onclick="afiseazaSectiune('specialist')">
+                    <i class="fas fa-user-tie nav-icon"></i>
+                    <span>Specialistul Dvs.</span>
+                </a>
+                <a href="#suport" class="nav-link" onclick="afiseazaSectiune('suport')">
+                    <i class="fas fa-headset nav-icon"></i>
+                    <span>Asistență Tehnică</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Conținut principal -->
+        <main class="main-content">
+            <!-- PANOU PRINCIPAL -->
+            <section id="dashboard" class="sectiune activa">
+                <div class="page-header">
+                    <h2 class="page-title">
+                        <i class="fas fa-tachometer-alt"></i> Panou Principal
+                    </h2>
+                    <div class="text-muted">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span id="dataCurenta"></span>
+                    </div>
+                </div>
+
+                <!-- Mesaj bun venit -->
+                <div class="alert alert-info">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h5>Bun venit în Cabinetul Personal BNR</h5>
+                            <p class="mb-0" id="mesajBunVenit"></p>
+                        </div>
+                        <button class="btn btn-primary" onclick="afiseazaSectiune('credit')">
+                            <i class="fas fa-arrow-right"></i> La Creditul Meu
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Card bancar -->
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title">
+                            <i class="fas fa-credit-card"></i> Cardul Dvs. Bancar
+                        </h5>
+                        <span class="badge badge-success">Activ</span>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-bancar">
+                            <div class="chip-card"></div>
+                            <div class="logo-card">VISA</div>
+                            <div class="numar-card" id="numarCard">4893 4756 9012 3456</div>
+                            <div class="detalii-card">
+                                <div class="posesor-card">
+                                    <small>DEȚINĂTOR CARD</small><br>
+                                    <strong id="numeCard">ION POPESCU</strong>
+                                </div>
+                                <div class="expirare-card">
+                                    <small>VALABIL PÂNĂ LA</small><br>
+                                    <strong>08/27</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Informații credit -->
+                <div class="row">
+                    <div class="col-8">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="card-title">
+                                    <i class="fas fa-chart-line"></i> Statistici Credit
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="stats-grid">
+                                    <div class="stat-card primary">
+                                        <div class="valoare-stat" id="totalCredit">50.000 LEI</div>
+                                        <div class="label-stat">Suma totală credit</div>
+                                        <div class="schimbare-stat positive">
+                                            <i class="fas fa-lock"></i> Rată fixă
+                                        </div>
+                                    </div>
+                                    <div class="stat-card success">
+                                        <div class="valoare-stat" id="achitatCredit">15.000 LEI</div>
+                                        <div class="label-stat">Achitat până acum</div>
+                                        <div class="schimbare-stat positive">
+                                            <i class="fas fa-arrow-up"></i> 30% finalizat
+                                        </div>
+                                    </div>
+                                    <div class="stat-card warning">
+                                        <div class="valoare-stat" id="restCredit">35.000 LEI</div>
+                                        <div class="label-stat">Rest de achitat</div>
+                                        <div class="schimbare-stat negative">
+                                            <i class="fas fa-calendar"></i> 14 luni rămase
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mt-4">
+                                    <h6>Progres achitare</h6>
+                                    <div class="progres">
+                                        <div class="bara-progres" id="baraProgres" style="width: 30%"></div>
+                                    </div>
+                                    <div class="d-flex justify-content-between mt-2">
+                                        <small>0 LEI</small>
+                                        <small id="textProgres">30% (15.000 LEI)</small>
+                                        <small>50.000 LEI</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="card-title">
+                                    <i class="fas fa-calendar-check"></i> Următoarea Plată
+                                </h5>
+                            </div>
+                            <div class="card-body text-center">
+                                <div class="mb-3">
+                                    <div class="valoare-stat text-primary" id="sumaPlata">2.500 LEI</div>
+                                    <div class="label-stat">Suma plății</div>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="valoare-stat" id="dataPlata">15.02.2024</div>
+                                    <div class="label-stat">Data plății</div>
+                                </div>
+                                <button class="btn btn-success w-100" onclick="efectueazaPlata()">
+                                    <i class="fas fa-money-bill-wave"></i> Efectuează Plată
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- CREDITUL MEU -->
+            <section id="credit" class="sectiune">
+                <div class="page-header">
+                    <h2 class="page-title">
+                        <i class="fas fa-credit-card"></i> Creditul Meu
+                    </h2>
+                    <button class="btn btn-primary" onclick="printeazaContract()">
+                        <i class="fas fa-print"></i> Printează Contract
+                    </button>
+                </div>
+
+                <div class="row">
+                    <div class="col-8">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="card-title">
+                                    <i class="fas fa-file-contract"></i> Detalii Contract Credit
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="tabel-container">
+                                    <table class="tabel">
+                                        <tbody>
+                                            <tr>
+                                                <td><strong>Număr contract</strong></td>
+                                                <td id="numarContract">CRD-2024-001</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Data încheierii</strong></td>
+                                                <td id="dataContract">15.01.2023</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Suma creditului</strong></td>
+                                                <td id="sumaCredit">50.000 LEI</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Rata dobânzii</strong></td>
+                                                <td id="rataDobanda">8.5% anual</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Perioada creditului</strong></td>
+                                                <td id="perioadaCredit">24 luni</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Plata lunară</strong></td>
+                                                <td id="plataLunara">2.500 LEI</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Data finalizării</strong></td>
+                                                <td id="dataFinal">15.01.2025</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Status</strong></td>
+                                                <td><span class="badge badge-success">Activ</span></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="card-title">
+                                    <i class="fas fa-calculator"></i> Calculator Credit
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="form-group">
+                                    <label>Sumă achitare anticipată</label>
+                                    <input type="number" id="achitareAnticipata" class="form-control" placeholder="Introduceți suma" min="1000" max="50000">
+                                </div>
+                                <div class="form-group">
+                                    <label>Data achitării</label>
+                                    <input type="date" id="dataAchitare" class="form-control">
+                                </div>
+                                <button class="btn btn-primary w-100" onclick="calculeazaAchitare()">
+                                    <i class="fas fa-calculator"></i> Calculează
+                                </button>
+                                <div class="mt-3 p-3 bg-light rounded" id="rezultatCalcul">
+                                    Introduceți datele pentru calcul
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SPECIALISTUL DVS. -->
+            <section id="specialist" class="sectiune">
+                <div class="page-header">
+                    <h2 class="page-title">
+                        <i class="fas fa-user-tie"></i> Specialistul Dvs.
+                    </h2>
+                    <button class="btn btn-success" onclick="contacteazaSpecialist()">
+                        <i class="fas fa-phone"></i> Contactează
+                    </button>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <div class="card-specialist">
+                            <div class="header-specialist">
+                                <div class="avatar-specialist">MP</div>
+                                <div>
+                                    <h3 class="nume-specialist" id="numeSpecialist">Maria Popescu</h3>
+                                    <p class="functie-specialist" id="functieSpecialist">Specialist Senior Credit BNR</p>
+                                    <p class="text-muted" id="experientaSpecialist">Experiență: 8 ani</p>
+                                </div>
+                            </div>
+                            
+                            <div class="contacte-specialist mt-4">
+                                <div class="item-contact">
+                                    <div class="icon-contact">
+                                        <i class="fas fa-phone"></i>
+                                    </div>
+                                    <div>
+                                        <div class="label-contact">Telefon birou</div>
+                                        <div class="valoare-contact" id="telefonSpecialist">+40 21 200 00 00</div>
+                                    </div>
+                                </div>
+                                <div class="item-contact">
+                                    <div class="icon-contact">
+                                        <i class="fas fa-mobile-alt"></i>
+                                    </div>
+                                    <div>
+                                        <div class="label-contact">Telefon mobil</div>
+                                        <div class="valoare-contact" id="mobilSpecialist">+40 721 123 456</div>
+                                    </div>
+                                </div>
+                                <div class="item-contact">
+                                    <div class="icon-contact">
+                                        <i class="fas fa-envelope"></i>
+                                    </div>
+                                    <div>
+                                        <div class="label-contact">Email</div>
+                                        <div class="valoare-contact" id="emailSpecialist">maria.popescu@bnr.ro</div>
+                                    </div>
+                                </div>
+                                <div class="item-contact">
+                                    <div class="icon-contact">
+                                        <i class="fas fa-clock"></i>
+                                    </div>
+                                    <div>
+                                        <div class="label-contact">Program lucru</div>
+                                        <div class="valoare-contact" id="programSpecialist">Lun-Vin: 9:00 - 18:00</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-4">
+                                <h5><i class="fas fa-comment-dots"></i> Note specialist</h5>
+                                <div class="p-3 bg-light rounded">
+                                    <p id="noteSpecialist">Ion este un împrumutat responsabil. Toate plățile sunt efectuate la timp. Recomand evaluarea unei posibile creșteri a limitei de credit în viitor.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer-bnr">
+        <div class="footer-links">
+            <a href="#" class="footer-link">Politica de confidențialitate</a>
+            <a href="#" class="footer-link">Termeni și condiții</a>
+            <a href="#" class="footer-link">Contactează banca</a>
+            <a href="#" class="footer-link">Harta site</a>
+        </div>
+        <div class="footer-copyright">
+            © 2024 BNR - Banca Națională a României. Toate drepturile rezervate.
+        </div>
+    </footer>
+
+    <script src="assets/js/main.js"></script>
+    <script>
+        // Verificare autentificare
+        document.addEventListener('DOMContentLoaded', function() {
+            const utilizator = JSON.parse(sessionStorage.getItem('utilizatorCurent'));
+            
+            if (!utilizator || utilizator.rol !== 'client') {
+                window.location.href = 'index.html';
+                return;
+            }
+            
+            // Încărcare date utilizator
+            incarcaDateUtilizator(utilizator);
+            
+            // Setare dată curentă
+            const acum = new Date();
+            document.getElementById('dataCurenta').textContent = 
+                acum.toLocaleDateString('ro-RO', { 
+                    weekday: 'long', 
+                    day: 'numeric', 
+                    month: 'long', 
+                    year: 'numeric' 
+                });
+                
+            // Generare număr card
+            const numarCard = '4893 ' + 
+                Math.floor(1000 + Math.random() * 9000) + ' ' + 
+                Math.floor(1000 + Math.random() * 9000) + ' ' + 
+                Math.floor(1000 + Math.random() * 9000);
+            document.getElementById('numarCard').textContent = numarCard;
+            
+            // Setare nume card
+            document.getElementById('numeCard').textContent = utilizator.nume.toUpperCase();
+            
+            // Mesaj bun venit
+            const ora = acum.getHours();
+            let salut = '';
+            if (ora < 12) salut = 'Bună dimineața';
+            else if (ora < 18) salut = 'Bună ziua';
+            else salut = 'Bună seara';
+            
+            document.getElementById('mesajBunVenit').textContent = 
+                `${salut}, ${utilizator.nume}! Bine ați revenit în cabinetul personal.`;
+        });
+        
+        // Încărcare date utilizator
+        function incarcaDateUtilizator(utilizator) {
+            document.getElementById('numeUtilizator').textContent = utilizator.nume;
+            document.getElementById('rolUtilizator').textContent = `Client ${utilizator.banca}`;
+            
+            // Date credit
+            if (utilizator.username === 'client') {
+                document.getElementById('totalCredit').textContent = '50.000 LEI';
+                document.getElementById('achitatCredit').textContent = '15.000 LEI';
+                document.getElementById('restCredit').textContent = '35.000 LEI';
+                document.getElementById('baraProgres').style.width = '30%';
+                document.getElementById('textProgres').textContent = '30% (15.000 LEI)';
+                document.getElementById('sumaPlata').textContent = '2.500 LEI';
+                document.getElementById('dataPlata').textContent = '15.02.2024';
+            }
+        }
+        
+        // Afișare secțiune
+        function afiseazaSectiune(sectiuneId) {
+            // Ascunde toate secțiunile
+            document.querySelectorAll('.sectiune').forEach(sectiune => {
+                sectiune.classList.remove('activa');
+            });
+            
+            // Afișează secțiunea selectată
+            document.getElementById(sectiuneId).classList.add('activa');
+            
+            // Actualizează link-ul activ în navigare
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('onclick')?.includes(sectiuneId)) {
+                    link.classList.add('active');
+                }
+            });
+        }
+        
+        // Efectuare plată
+        function efectueazaPlata() {
+            const modal = `
+                <div class="modal-bnr show">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 class="modal-title">
+                                <i class="fas fa-money-bill-wave"></i> Efectuare Plată
+                            </h3>
+                            <button class="modal-close" onclick="inchideModal()">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label>Sumă plată (LEI)</label>
+                                <input type="number" class="form-control" id="sumaPlataModal" value="2500" min="100" max="50000">
+                            </div>
+                            <div class="form-group">
+                                <label>Data plății</label>
+                                <input type="date" class="form-control" id="dataPlataModal" value="${new Date().toISOString().split('T')[0]}">
+                            </div>
+                            <div class="form-group">
+                                <label>Metodă plată</label>
+                                <select class="form-control" id="metodaPlata">
+                                    <option>Card bancar</option>
+                                    <option>Transfer bancar</option>
+                                    <option>Ordin de plată</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" onclick="inchideModal()">Anulează</button>
+                            <button class="btn btn-primary" onclick="confirmaPlata()">Confirmă Plata</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.insertAdjacentHTML('beforeend', modal);
+        }
+        
+        // Închidere modal
+        function inchideModal() {
+            const modal = document.querySelector('.modal-bnr');
+            if (modal) modal.remove();
+        }
+        
+        // Confirmare plată
+        function confirmaPlata() {
+            alert('✅ Plată efectuată cu succes!');
+            inchideModal();
+        }
+        
+        // Contactare specialist
+        function contacteazaSpecialist() {
+            alert('Contact specialist:\n\nTelefon: +40 721 123 456\nEmail: maria.popescu@bnr.ro\n\nProgram: Lun-Vin, 9:00-18:00');
+        }
+        
+        // Calcul achitare anticipată
+        function calculeazaAchitare() {
+            const suma = parseFloat(document.getElementById('achitareAnticipata').value);
+            const data = document.getElementById('dataAchitare').value;
+            
+            if (!suma || !data) {
+                alert('Vă rugăm să completați toate câmpurile!');
+                return;
+            }
+            
+            const rezultat = document.getElementById('rezultatCalcul');
+            const economie = (suma * 0.085).toFixed(2);
+            const luniReduse = Math.floor(suma / 2500);
+            
+            rezultat.innerHTML = `
+                <strong>Rezultate calcul:</strong><br>
+                Sumă achitare anticipată: ${suma.toLocaleString()} LEI<br>
+                Data achitării: ${data}<br>
+                Economie dobândă: ${economie} LEI<br>
+                Luni reduse: ${luniReduse} luni<br>
+                Nouă plată lunară: 2.500 LEI
+            `;
+        }
+        
+        // Deconectare
+        function logout() {
+            sessionStorage.clear();
+            window.location.href = 'index.html';
+        }
+        
+        // Imprimare contract
+        function printeazaContract() {
+            const content = `
+                <html>
+                <head>
+                    <title>Contract Credit</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; margin: 40px; }
+                        .contract { padding: 30px; border: 2px solid #003366; }
+                        .header { text-align: center; margin-bottom: 40px; }
+                        .details { margin: 20px 0; }
+                        .signature { margin-top: 60px; }
+                    </style>
+                </head>
+                <body>
+                    <div class="contract">
+                        <div class="header">
+                            <h1>CONTRACT DE CREDIT NR. CRD-2024-001</h1>
+                            <h3>BNR - Banca Națională a României</h3>
+                        </div>
+                        <div class="details">
+                            <p><strong>Împrumutat:</strong> Ion Popescu</p>
+                            <p><strong>Suma creditului:</strong> 50.000 LEI</p>
+                            <p><strong>Rata dobânzii:</strong> 8.5% anual</p>
+                            <p><strong>Perioada:</strong> 24 luni</p>
+                            <p><strong>Plata lunară:</strong> 2.500 LEI</p>
+                        </div>
+                        <div class="signature">
+                            <p>_________________________</p>
+                            <p>Semnătura împrumutatului</p>
+                        </div>
+                    </div>
+                </body>
+                </html>
+            `;
+            
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(content);
+            printWindow.document.close();
+            printWindow.print();
+        }
+    </script>
+</body>
+</html>
